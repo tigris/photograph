@@ -8,8 +8,14 @@ module Photograph
       Artist.new :url => URL
     end
 
+    it "should accept a block when shooting" do
+      Artist.new(:url => URL).shoot! do |image|
+        image.should respond_to(:path)
+      end
+    end
+
     it "should raise an error without an url" do
-      expect { Artist.new }.should raise_error(Artist::MissingUrlError)
+      expect { Artist.new }.to raise_error(Artist::MissingUrlError)
     end
 
     describe "Default size values" do

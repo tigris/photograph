@@ -21,12 +21,10 @@ module Photograph
                           :wait => params["wait"].to_f,
                           :selector => params["selector"]
 
-      artist.shoot!
-
-      send_file artist.image.path,
-        :type => :png
-
-      artist.clean!
+      artist.shoot! do |image|
+        send_file image.path,
+          :type => :png
+      end
     end
   end
 end

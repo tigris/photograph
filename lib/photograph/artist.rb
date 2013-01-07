@@ -34,8 +34,15 @@ module Photograph
       @options = DefaultOptions.merge(options)
     end
 
-    def shoot!
+    def shoot! &block
       @image = capture
+
+      if block_given?
+        yield @image
+        clean!
+      else
+        @image
+      end
     end
 
     def capture
