@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jh@chabran.fr"]
   gem.description   = %q{Webservice that screenshots any url}
   gem.summary       = %q{Webservice that screenshots any url}
-  gem.homepage      = "https://github.com/TactilizeTeam/photograph"
+  gem.homepage      = "https://github.com/jhchabran/photograph"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
