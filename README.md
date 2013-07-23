@@ -35,7 +35,7 @@ Or install it yourself as:
 Photograph can be used either directly through the Photograph::Artist
 class or by its little sinatra app. 
 
-    @artist = Photograph::Artist.new("http://github.com")
+    @artist = Photograph::Artist.new(:url => "http://github.com")
     @artist.shoot!
 
     @artist.image
