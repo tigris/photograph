@@ -1,20 +1,13 @@
 # Photograph
 
-Photograph solves the issue of generating previews or thumbnails of
-web-based documents. Think of generating a preview of a Google
-Spreadsheet. As a such document is dom based, it may be difficult to get a preview
-that truly reflects the original content. 
+Photograph allows to take screenshots of webpages, the rendering being
+done by Chrome.
 
-Photograph solves that problem by firing a chrome instance thanks to
-capybara-webkit and sinatra to provides an easy way to interface it to
-your needs. 
+Typically, this can be used to generate screenshots for DOM based
+documents.
 
-Obviously, it supports cropping to avoid reworking the image afterward.
-
-Please remind that having a chrome instance, even if it is being reused
-by all requests is still taking some time, aroung 600ms after the first 
-request on my development machine. *Consider using photograph only if
-you expect the same exact rendering of your 'web documents'*.
+Please remind that having a chrome instance doing the rendering, even if it is launched only once,
+is slow, around 600ms.
 
 ## Installation
 
@@ -55,14 +48,7 @@ Or
 
 ## Credits
 
-
-Photograph is maintained and funded by Tactilize.
-
-Contributors : 
-
-* Jean-Hadrien Chabran
-
-The names and logos for Tactilize are trademarks of Tactilize.
+Photograph is maintained by Jean-Hadrien Chabran
 
 ## License
 
