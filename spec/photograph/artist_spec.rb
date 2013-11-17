@@ -18,6 +18,26 @@ module Photograph
       expect { Artist.new }.to raise_error(Artist::MissingUrlError)
     end
 
+    describe "Wrongly formed urls" do
+      it "should leave '#{URL} untouched as it is already valid" do
+        @artist = Artist.new :url => URL
+
+        expect(@artist.options[:url]).to eq(URL)
+      end
+
+      it "should leave 'https://rubygems.org' untouched as it is already valid" do
+        @artist = Artist.new :url => 'https://rubygems.org'
+
+        expect(@artist.options[:url]).to eq('https://rubygems.org')
+      end
+
+      it "should prepend 'http://' if protocol isn't present" do
+        @artist = Artist.new :url => "github.com"
+
+        expect(@artist.options[:url]).to eq("http://github.com")
+      end
+    end
+
     describe "Default size values" do
       before(:each) { @artist = Artist.new :url => URL }
 

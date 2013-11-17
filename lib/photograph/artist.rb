@@ -28,10 +28,19 @@ module Photograph
       self.class.browser
     end
 
+    def normalize_url url
+      unless url.match(/https?:\/\//)
+        url = "http://#{url}"
+      end
+
+      url
+    end
+
     def initialize options={}
       raise MissingUrlError unless options[:url]
 
       @options = DefaultOptions.merge(options)
+      @options[:url] = normalize_url(options[:url])
     end
 
     def shoot! &block
