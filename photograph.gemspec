@@ -21,6 +21,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'sinatra-contrib'
   gem.add_dependency 'thin'
 
-  gem.add_development_dependency 'rspec', '~> 2.6'
+  gem.add_development_dependency 'rspec', '~> 2.14'
   gem.add_development_dependency 'rake'
 end
