@@ -44,17 +44,8 @@ module Photograph
     end
 
     def shoot! &block
-      @image = capture
+      raise "Using Artist#shoot! without a block had been deprecated" unless block_given?
 
-      if block_given?
-        yield @image
-        clean!
-      else
-        @image
-      end
-    end
-
-    def capture
       browser.visit @options[:url]
 
       if @options[:selector]
@@ -65,30 +56,26 @@ module Photograph
         sleep @options[:wait]
       end
 
-      @tempfile = Tempfile.new(['photograph','.png'])
+      tempfile = Tempfile.new(['photograph','.png'])
 
-      browser.driver.render @tempfile.path,
+      browser.driver.render tempfile.path,
         :width  => options[:w] + options[:x],
         :height => options[:h] + options[:y]
 
-      @image = adjust_image
+      yield adjust_image(tempfile)
+    ensure
+      tempfile.unlink
     end
 
-    def adjust_image
-      image = MiniMagick::Image.read @tempfile
+    def adjust_image tempfile
+      image = MiniMagick::Image.read tempfile
 
       if options[:h] && options[:w]
         image.crop "#{options[:w]}x#{options[:h]}+#{options[:x]}+#{options[:y]}"
-
-        image.write @tempfile
-
+        image.write tempfile
       end
 
       image
-    end
-
-    def clean!
-      @tempfile.unlink
     end
   end
 end

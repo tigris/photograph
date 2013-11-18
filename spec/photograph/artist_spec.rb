@@ -14,6 +14,10 @@ module Photograph
       end
     end
 
+    it "should raise an exception if not block was given when shooting" do
+      expect {Artist.new(:url => URL).shoot!}.to raise_error
+    end
+
     it "should raise an error without an url" do
       expect { Artist.new }.to raise_error(Artist::MissingUrlError)
     end

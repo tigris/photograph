@@ -25,14 +25,19 @@ Or install it yourself as:
 
 ## Usage
 
+**Using `Artist.shoot!` without a block had been deprecated in 0.3 and
+will raise an exception.**
+
 Photograph can be used either directly through the Photograph::Artist
 class or by its little sinatra app. 
 
     @artist = Photograph::Artist.new(:url => "http://github.com")
-    @artist.shoot!
+    @artist.shoot! do |image|
+      image # => MiniMagick instance you can toy with
 
-    @artist.image
-    # => MiniMagick instance you can toy with
+      send_file image.path,
+        :type => :png
+    end
 
 Or 
 
@@ -52,4 +57,4 @@ Photograph is maintained by Jean-Hadrien Chabran
 
 ## License
 
-Photograph is Copyright © 2012 Tactilize. It is free software, and may be redistributed under the terms specified in the MIT-LICENSE file.
+Photograph is Copyright © 2013 JHCHABRAN. It is free software, and may be redistributed under the terms specified in the MIT-LICENSE file.
