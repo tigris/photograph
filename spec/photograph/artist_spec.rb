@@ -13,7 +13,7 @@ module Photograph
     end
 
     it('should raise an exception if no block was given when shooting') do
-      expect{ subject.shoot! }.to raise_error
+      expect{ subject.shoot! }.to raise_error(Artist::DeprecationError)
     end
 
     it('should raise an error without an url') do

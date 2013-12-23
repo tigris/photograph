@@ -9,7 +9,9 @@ module Photograph
     attr_accessor :options
     attr_reader :image
 
-    MissingUrlError = Class.new(Exception)
+    class MissingUrlError  < ArgumentError; end
+    class DeprecationError < RuntimeError;  end
+
     DefaultOptions  = {
       :x => 0,          # top left position
       :y => 0,
@@ -37,14 +39,14 @@ module Photograph
     end
 
     def initialize options={}
-      raise MissingUrlError unless options[:url]
+      raise MissingUrlError.new('missing argument :url') unless options[:url]
 
       @options = DefaultOptions.merge(options)
       @options[:url] = normalize_url(options[:url])
     end
 
     def shoot! &block
-      raise "Using Artist#shoot! without a block had been deprecated" unless block_given?
+      raise DeprecationError.new('Using Artist#shoot! without a block had been deprecated') unless block_given?
 
       browser.visit @options[:url]
 
@@ -64,7 +66,7 @@ module Photograph
 
       yield adjust_image(tempfile)
     ensure
-      tempfile.unlink
+      tempfile.unlink if tempfile
     end
 
     def adjust_image tempfile
