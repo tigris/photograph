@@ -27,7 +27,7 @@ module Photograph
     end
 
     def browser
-      self.class.browser
+      @options[:browser] || self.class.browser
     end
 
     def normalize_url url
