@@ -2,11 +2,13 @@ require 'sinatra/base'
 require 'sinatra/json'
 
 module Photograph
-  # Preload the chrome instance
-  Artist.browser
-
   class Service < ::Sinatra::Base
     helpers Sinatra::JSON
+
+    # Reuse the same browser instance between requests.
+    def browser
+      @browser ||= Artist.create_browser
+    end
 
     get '/' do
       json :version => Photograph::VERSION
@@ -19,7 +21,8 @@ module Photograph
                           :w   => params["w"].to_i,
                           :h   => params["h"].to_i,
                           :wait => params["wait"].to_f,
-                          :selector => params["selector"]
+                          :selector => params["selector"],
+                          :browser => browser
 
       artist.shoot! do |image|
         send_file image.path,
