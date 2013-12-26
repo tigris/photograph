@@ -62,6 +62,7 @@ module Photograph
     # * +y+ left coordinate of the screenshot, default to 0
     # * +w+ width of the screenshot, default to 1280
     # * +h+ height of the screenshot, default to 1024
+    # * +browser+ Capybara instance to use, typically instanciated by +Artist.create_browser+
     def initialize options={}
       raise MissingUrlError.new('missing argument :url') unless options[:url]
 
