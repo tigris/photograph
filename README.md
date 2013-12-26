@@ -51,9 +51,10 @@ Or
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## Credits
+## Authors
 
-Photograph is maintained by Jean-Hadrien Chabran
+* Jean-Hadrien Chabran
+* Danial Pearce
 
 ## License
 
