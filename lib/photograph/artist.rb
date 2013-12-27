@@ -77,6 +77,8 @@ module Photograph
 
       browser.visit @options[:url]
 
+      @before_hook.call(browser) if @before_hook
+
       if @options[:selector]
         browser.wait_until do
           browser.has_css? @options[:selector]
@@ -107,6 +109,10 @@ module Photograph
       end
 
       image
+    end
+
+    def before &block
+      @before_hook = block
     end
   end
 end

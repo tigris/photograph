@@ -52,15 +52,32 @@ module Photograph
       end
 
       describe 'Cropping' do
-        subject { Artist.new :url => URL, :x => 200, :y => 100, :h => 400, :w => 400 }
-        before { Artist.browser.driver.stub(:render) }
+        subject { Artist.new :url => url, :x => 200, :y => 100, :h => 400, :w => 400 }
+        before { subject.browser.driver.stub(:render) }
 
         xit 'should take a screenshot large enough to crop later' do
           subject.shoot!
         end
       end
-
     end
 
+    describe "#before" do
+      subject { Artist.new :url => url }
+      before do
+        subject.browser.driver.stub(:visit)
+        subject.browser.driver.stub(:click_link)
+        subject.browser.driver.stub(:render)
+        subject.stub(:adjust_image)
+      end
+
+      it('should call the before hook before shooting') do
+        subject.before do |browser|
+          browser.click_link "Use the API"
+        end
+
+        allow(subject.browser).to receive(:click_link)
+        subject.shoot! {}
+      end
+    end
   end
 end
