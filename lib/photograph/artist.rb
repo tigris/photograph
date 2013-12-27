@@ -36,7 +36,7 @@ module Photograph
     #
     # If none had been supplied, it creates a new one.
     def browser
-      @options[:browser] || self.class.create_browser
+      @options[:browser] ||= self.class.create_browser
     end
 
     ##
