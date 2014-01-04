@@ -80,6 +80,7 @@ module Photograph
       @before_hook.call(browser) if @before_hook
 
       if @options[:selector]
+        # TODO: wait_until is no longer supported in capybara
         browser.wait_until do
           browser.has_css? @options[:selector]
         end
@@ -88,6 +89,8 @@ module Photograph
       end
 
       tempfile = Tempfile.new(['photograph','.png'])
+      # TODO: would be nice to resize back if there was a way of knowing what
+      # the browser was set to before
       browser.driver.resize(options[:w] + options[:x], options[:h] + options[:y])
       browser.save_screenshot(tempfile.path, :full => true)
 
