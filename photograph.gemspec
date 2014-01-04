@@ -4,8 +4,8 @@ require File.expand_path('../lib/photograph/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["JH. Chabran"]
   gem.email         = ["jh@chabran.fr"]
-  gem.description   = %q{Webservice that screenshots any url}
-  gem.summary       = %q{Webservice that screenshots any url}
+  gem.description   = %q{Ruby gem that screenshots any url}
+  gem.summary       = %q{Ruby gem that screenshots any url}
   gem.homepage      = "https://github.com/jhchabran/photograph"
 
   gem.files         = `git ls-files`.split($\)
@@ -17,9 +17,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'poltergeist'
   gem.add_dependency 'mini_magick'
-  gem.add_dependency 'sinatra'
-  gem.add_dependency 'sinatra-contrib'
-  gem.add_dependency 'thin'
 
   gem.add_development_dependency 'rspec', '~> 2.14'
   gem.add_development_dependency 'rake'
