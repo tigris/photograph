@@ -88,27 +88,19 @@ module Photograph
       end
 
       tempfile = Tempfile.new(['photograph','.png'])
-      tempfile.binmode
+      browser.driver.resize(options[:w] + options[:x], options[:h] + options[:y])
+      browser.save_screenshot(tempfile.path, :full => true)
 
-      browser.driver.render tempfile.path,
-        :width  => options[:w] + options[:x],
-        :height => options[:h] + options[:y]
-
-      yield adjust_image(tempfile)
+      yield adjust_image(tempfile.path)
     ensure
       tempfile.unlink if tempfile
     end
 
     ##
-    # Crops a given +tempfile+ according to initially given +options+
-    def adjust_image tempfile
-      image = MiniMagick::Image.read tempfile
-
-      if options[:h] && options[:w]
-        image.crop "#{options[:w]}x#{options[:h]}+#{options[:x]}+#{options[:y]}"
-        image.write tempfile
-      end
-
+    # Crops a given +filepath+ according to initially given +options+
+    def adjust_image filepath
+      image = MiniMagick::Image.open filepath
+      image.crop "#{options[:w]}x#{options[:h]}+#{options[:x]}+#{options[:y]}" if options[:h] && options[:w]
       image
     end
 

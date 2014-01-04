@@ -33,14 +33,12 @@ module Photograph
     end
 
     describe '#shoot!' do
-      context 'when browser has been provided' do
-        let(:browser) { Capybara::Session.new(:poltergeist) }
-        subject       { Artist.new(:url => url, :browser => browser) }
+      let(:browser) { Capybara::Session.new(:poltergeist) }
+      subject       { Artist.new(:url => url, :browser => browser) }
 
-        it 're-uses the browser provided to Artist#new' do
-          browser.should_receive(:visit)
-          subject.shoot! {}
-        end
+      it 're-uses the browser provided to Artist#new' do
+        browser.should_receive(:visit)
+        subject.shoot! {}
       end
 
       it('should accept a block when shooting') do
@@ -51,20 +49,24 @@ module Photograph
         expect{ subject.shoot! }.to raise_error(Artist::DeprecationError)
       end
 
+      it('should make sure the viewport is big enough for the required screenshot') do
+        artist = Artist.new browser: browser, :url => url, :h => 2000, :w => 1200
+        expect(browser.driver).to receive(:resize).with(1200, 2000)
+        artist.shoot! {}
+      end
+
       describe 'Cropping' do
-        let(:browser) { Capybara::Session.new(:poltergeist) }
         subject { Artist.new browser: browser, :url => url, :x => 200, :y => 100, :h => 400, :w => 400 }
 
         it 'should take a screenshot large enough to crop later' do
-          MiniMagick::Image.stub(:read).and_return(double(:image, crop: nil, write: nil))
-          expect(browser.driver).to receive(:render).with(an_instance_of(String), { height: 500, width: 600 })
+          MiniMagick::Image.stub(:read).and_return(double(:image, crop: nil))
+          expect(browser.driver).to receive(:save_screenshot).with(an_instance_of(String), { :full => true })
           subject.shoot!{}
         end
 
         it 'should crop the image' do
-          image = double(:image, write: nil)
-          MiniMagick::Image.stub(:read).and_return(image)
-          browser.driver.stub(:render)
+          image = double(:image)
+          MiniMagick::Image.stub(:open).and_return(image)
           expect(image).to receive(:crop).with('400x400+200+100')
           subject.shoot!{}
         end
