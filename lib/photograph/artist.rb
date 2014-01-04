@@ -88,6 +88,7 @@ module Photograph
       end
 
       tempfile = Tempfile.new(['photograph','.png'])
+      tempfile.binmode
 
       browser.driver.render tempfile.path,
         :width  => options[:w] + options[:x],
