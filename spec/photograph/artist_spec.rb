@@ -52,11 +52,21 @@ module Photograph
       end
 
       describe 'Cropping' do
-        subject { Artist.new :url => url, :x => 200, :y => 100, :h => 400, :w => 400 }
-        before { subject.browser.driver.stub(:render) }
+        let(:browser) { Capybara::Session.new(:poltergeist) }
+        subject { Artist.new browser: browser, :url => url, :x => 200, :y => 100, :h => 400, :w => 400 }
 
-        xit 'should take a screenshot large enough to crop later' do
-          subject.shoot!
+        it 'should take a screenshot large enough to crop later' do
+          MiniMagick::Image.stub(:read).and_return(double(:image, crop: nil, write: nil))
+          expect(browser.driver).to receive(:render).with(an_instance_of(String), { height: 500, width: 600 })
+          subject.shoot!{}
+        end
+
+        it 'should crop the image' do
+          image = double(:image, write: nil)
+          MiniMagick::Image.stub(:read).and_return(image)
+          browser.driver.stub(:render)
+          expect(image).to receive(:crop).with('400x400+200+100')
+          subject.shoot!{}
         end
       end
     end
